@@ -13,13 +13,14 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { createUserDto } from 'src/users/dtos/CreateUserDto';
+import { UsersService } from 'src/users/services/users/users.service';
 
 @Controller('users')
 export class UsersController {
+  constructor(private userService: UsersService) {}
   @Get()
-  getUser(@Query('sortedByDes', ParseBoolPipe) sortedByDes: boolean) {
-    console.log(sortedByDes);
-    return [{ username: 'Ahmed', email: 'ahmedali123@gmail.com' }];
+  getUser() {
+    return this.userService.fetchUser();
   }
 
   @Get('allposts')
@@ -50,7 +51,8 @@ export class UsersController {
   @UsePipes(new ValidationPipe())
   createUser(@Body() userData: createUserDto) {
     console.log(userData);
-    return {};
+    this.userService.createUser(userData);
+    return this.userService.fetchUser();
   }
 
   @Get(':id')

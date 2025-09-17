@@ -9,14 +9,17 @@ import {
   Query,
   Req,
   Res,
+  UseGuards,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
 import { createUserDto } from 'src/users/dtos/CreateUserDto';
+import { AuthGuard } from 'src/users/guard/auth/auth.guard';
 import { ValidateCreateUserPipe } from 'src/users/pipes/validate-create-user/validate-create-user.pipe';
 import { UsersService } from 'src/users/services/users/users.service';
 
 @Controller('users')
+@UseGuards(AuthGuard)
 export class UsersController {
   constructor(private userService: UsersService) {}
   @Get()
